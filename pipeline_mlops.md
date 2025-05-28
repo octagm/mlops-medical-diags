@@ -20,6 +20,7 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 ```mermaid
 graph TD
     A[¿Soporta Mermaid?] --> B[¡Sí!]
+```
 
 ---
 
