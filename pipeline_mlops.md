@@ -17,10 +17,12 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 
 ## Diagrama del rediseño Pipeline MLOps
 
+<p align="center">
 <img width="550" alt="image" src="https://github.com/user-attachments/assets/54806ea0-9c0b-43b0-bc40-1291bf8c4ef7" />
 
 <img width="444" alt="image" src="https://github.com/user-attachments/assets/3f7c8d35-2024-4a37-b786-d11713471022" />
 
+</p>
 
 
 ---
