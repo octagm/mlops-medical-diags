@@ -1,4 +1,5 @@
 # Propuesta Rediseñada del Pipeline de MLOps - Diagnóstico de Enfermedades Comunes y Huérfanas
+![Header](/assets/ml_pipeline_header.png)
 
 ## Objetivo
 
@@ -6,153 +7,179 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 
 ---
 
-## Supuestos
+## 📌 Supuestos
 
-- El sistema debe poder ejecutarse tanto localmente (si el modelo es ligero) como en la nube.
-- La base de datos se actualizará periódicamente con nuevos casos.
-- Los datos incluyen estructuras tabulares, texto libre (notas clínicas) e imágenes médicas.
-- Se requiere un control estricto de privacidad y cumplimiento normativo (ej. HIPAA/GDPR).
-- Se considera un entorno mixto: uso local por médicos y APIs disponibles vía nube para casos más complejos.
-
----
-
-## Pipeline Rediseñado
-
-### 1. **Ingesta de Datos**
-
-**Tecnologías:**
-- **AWS Glue**: para ingesta y transformación desde EHRs, archivos CSV, bases de datos relacionales.
-- **Amazon S3**: almacenamiento centralizado de datos estructurados y no estructurados.
-
-**Justificación:**
-Permite escalar el procesamiento, automatizar flujos y centralizar los datos.
+- El modelo debe ejecutarse localmente o en la nube.
+- Los datos clínicos incluyen texto, imágenes y tablas.
+- Se espera privacidad (HIPAA/GDPR).
+- Los datos nuevos se integran frecuentemente.
 
 ---
 
-### 2. **Preprocesamiento de Datos**
-
-**Tecnologías:**
-- **AWS SageMaker Processing Jobs**
-- **Pandas / Scikit-learn / NLTK / PyTorch transforms (para imágenes)**
-
-**Procesos:**
-- Normalización y estandarización.
-- Imputación de datos faltantes.
-- Codificación de variables categóricas.
-- Embeddings para texto clínico.
-- Resize y normalización para imágenes médicas.
-
-**Justificación:**
-SageMaker permite distribuir el preprocesamiento en entornos reproducibles y escalables.
+## 🔄 Pipeline Rediseñado
 
 ---
 
-### 3. **División del Dataset**
+### 1. Ingesta de Datos
 
-- Estratificación según clase para manejar el desbalance.
-- División entrenamiento/validación/test usando `StratifiedKFold`.
-
----
-
-### 4. **Selección y Entrenamiento de Modelos**
-
-**Modelos Propuestos:**
-- **Random Forest**: buen desempeño base, interpretable.
-- **XGBoost**: potente en datos tabulares.
-- **Redes Neuronales Feedforward**: útiles para datos combinados.
-- **Transformers** (para texto) + CNNs (para imágenes).
-- **Transfer Learning**: para casos con pocos datos (enfermedades huérfanas).
-
-**Framework:**
-- **AWS SageMaker Estimator API** para entrenar y ajustar modelos automáticamente.
-
-**Criterios de selección:**
-- Se seleccionará el modelo con mejor F1 Score y Recall.
-- Este modelo será versionado para servir como base en futuros reentrenamientos.
-
----
-
-### 5. **Evaluación del Modelo**
-
-**Métricas:**
-- F1 Score
-- AUC-ROC
-- Recall (por clase)
+![Ingesta](/assets/data_ingestion.png)
 
 **Herramientas:**
-- **SageMaker Experiments** para comparar modelos y registrar métricas.
-- **TensorBoard o MLflow** si se ejecuta fuera de SageMaker.
+
+![AWS Glue](/assets/aws-glue.png) ![Amazon S3](/assets/s3.png)
+
+- **AWS Glue**: automatiza la extracción y limpieza de datos desde fuentes clínicas.
+- **Amazon S3**: almacenamiento escalable para todos los datos recolectados.
 
 ---
 
-### 6. **Empaquetamiento del Modelo**
+### 2. Preprocesamiento
 
-**Tecnología:**
-- **SageMaker Model Registry** para control de versiones.
-- **Docker** si se requiere despliegue local o en hospitales.
+![Preprocessing](/assets/preprocessing.png)
+
+**Herramientas:**
+
+![SageMaker](/assets/sagemaker.png) ![Pandas](/assets/pandas.png) ![Scikit-learn](/assets/sklearn.png) ![NLTK](/assets/nltk.png)
+
+- Imputación, codificación, normalización.
+- Embeddings para texto y resize de imágenes médicas.
+- Procesamiento reproducible vía SageMaker Processing Jobs.
 
 ---
 
-### 7. **Despliegue**
+### 3. División del Dataset
+
+**Técnica:**
+- `StratifiedKFold` para respetar proporción de clases.
+
+---
+
+### 4. Selección y Entrenamiento del Modelo
+
+![Model Training](/assets/training.png)
+
+**Modelos candidatos:**
+
+![XGBoost](/assets/xgboost.png) ![Random Forest](/assets/randomforest.png) ![Neural Networks](/assets/nn.png) ![Transformers](/assets/transformers.png)
+
+**Framework:**
+
+![SageMaker](/assets/sagemaker.png)
+
+- Entrenamiento automático y distribuido.
+- El modelo con mejor **F1 Score + Recall** se selecciona.
+- Soporte para **transfer learning** y **few-shot learning** para enfermedades raras.
+
+---
+
+### 5. Evaluación del Modelo
+
+![Evaluation](/assets/evaluation.png)
+
+**Herramientas:**
+
+![SageMaker Experiments](/assets/experiments.png) ![MLflow](/assets/mlflow.png)
+
+- F1 Score, AUC-ROC, Recall.
+- Comparación de modelos y registro de resultados.
+
+---
+
+### 6. Empaquetamiento
+
+![Packaging](/assets/packaging.png)
+
+**Herramientas:**
+
+![Docker](/assets/docker.png) ![SageMaker Registry](/assets/model-registry.png)
+
+- Modelos versionados y empaquetados como imágenes.
+- Preparación para despliegue local o en la nube.
+
+---
+
+### 7. Despliegue
+
+![Deployment](/assets/deployment.png)
 
 **Opciones:**
-- **Local:** Contenedor Docker con API Flask.
-- **Cloud:** SageMaker Endpoint (real-time) o SageMaker Batch Transform (batch predictions).
-
-**Justificación:**
-Ofrece flexibilidad para que el médico use localmente o haga peticiones vía web.
+- **Local**: contenedor Docker.
+- **Cloud**: SageMaker Endpoint (tiempo real) o Batch Transform.
 
 ---
 
-### 8. **Interfaz para Médicos**
+### 8. Interfaz para Médicos
+
+![User Interface](/assets/interface.png)
 
 **Tecnologías:**
-- **React + Flask API** o aplicación de escritorio simple con **Tkinter**.
-- Entradas: temperatura, ritmo cardíaco, oxigenación, síntomas (texto).
+
+![React](/assets/react.png) ![Flask](/assets/flask.png)
+
+- Web simple o aplicación de escritorio.
+- Formulario para ingresar síntomas y obtener predicción.
 
 ---
 
-### 9. **Monitoreo**
+### 9. Monitoreo del Modelo
 
-**Tecnologías:**
-- **SageMaker Model Monitor**: detección de desviaciones (data drift).
-- **Prometheus + Grafana**: métricas personalizadas si se usa Docker.
+![Monitoring](/assets/monitoring.png)
 
----
+**Herramientas:**
 
-### 10. **Reentrenamiento**
+![SageMaker Monitor](/assets/sagemaker-monitor.png) ![Grafana](/assets/grafana.png)
 
-**Automatización:**
-- **AWS Step Functions** o **Apache Airflow**: para pipeline de reentrenamiento automático.
-- **Trigger:** caída en desempeño o inclusión de nuevas enfermedades confirmadas.
+- Monitoreo de métricas de desempeño.
+- Detección de desviaciones (data drift).
+- Registro para retraining.
 
 ---
 
-### 11. **Control de Versiones**
+### 10. Reentrenamiento
 
-**Tecnologías:**
-- **Git + DVC**: para versionado de datos y modelos.
-- **CHANGELOG.md**: para registrar cambios documentales y decisiones.
+![Retraining](/assets/retraining.png)
 
----
+**Herramientas:**
 
-### 12. **Privacidad y Seguridad**
+![Airflow](/assets/airflow.png) ![Step Functions](/assets/stepfunctions.png)
 
-- **Cifrado en S3 y SageMaker**
-- **IAM roles y políticas restrictivas**
-- **HIPAA compliance tools de AWS**
+- Reentrenamiento automático por condición o programación.
+- Flujo orquestado en AWS o local.
 
 ---
 
-## Diagrama del Pipeline
+### 11. Control de Versiones
 
-[Agrega aquí una imagen tipo PNG con el pipeline usando draw.io, Lucidchart, etc.]
+![Version Control](/assets/versioning.png)
+
+**Herramientas:**
+
+![Git](/assets/git.png) ![DVC](/assets/dvc.png)
+
+- Git para código.
+- DVC para datos y modelos.
+- Model Registry en SageMaker para trazabilidad.
 
 ---
 
-## CHANGELOG
+### 12. Privacidad y Seguridad
 
-Ver archivo `CHANGELOG.md`
+![Security](/assets/security.png)
+
+**Medidas:**
+- Cifrado en tránsito y en reposo.
+- IAM para controlar accesos.
+- Arquitectura compatible con HIPAA.
 
 ---
+
+## 🧭 Diagrama del Pipeline
+
+_Agregar aquí imagen tipo diagrama (`pipeline_diagram.png`)_
+
+---
+
+## 🧾 CHANGELOG
+
+Ver archivo [`CHANGELOG.md`](./CHANGELOG.md)
 
