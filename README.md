@@ -1,4 +1,4 @@
-# mlops-medical-diags
+# Diagnóstico Medico - Dieño de Pipeline MLOps
 
 ## Descripción del Problema
 
