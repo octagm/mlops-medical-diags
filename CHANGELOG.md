@@ -27,7 +27,6 @@
 - Se añadieron supuestos explícitos al inicio del documento.
 - Cada etapa ahora tiene:
   - Una imagen representativa o ícono.
-  - Logos de herramientas sugeridas.
   - Justificación técnica para cada herramienta.
 - El pipeline se alinea con buenas prácticas modernas de MLOps (automatización, monitoreo, reentrenamiento continuo).
 
