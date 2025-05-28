@@ -17,6 +17,12 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 
 ## Diagrama del rediseño Pipeline MLOps
 
+<p align="center">
+<img width="550" alt="image" src="https://github.com/user-attachments/assets/54806ea0-9c0b-43b0-bc40-1291bf8c4ef7" />
+
+<img width="444" alt="image" src="https://github.com/user-attachments/assets/3f7c8d35-2024-4a37-b786-d11713471022" />
+
+</p>
 
 
 ---
@@ -114,8 +120,8 @@ Ofrece flexibilidad para que el médico use localmente o haga peticiones vía we
 ### 8. **Interfaz para Médicos**
 
 **Tecnologías:**
-- **React + Flask API** o aplicación de escritorio simple con **Tkinter**.
-- Entradas: temperatura, ritmo cardíaco, oxigenación, síntomas (texto).
+- **React + Flask API** para correr en Local
+- **Recursos en AWS: SageMaker Endpoint** para acceso a traves de Nube Pública
 
 ---
 
