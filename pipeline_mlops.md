@@ -19,7 +19,44 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 
 ```mermaid
 graph TD
-    A[¿Soporta Mermaid?] --> B[¡Sí!]
+    A[Ingesta de Datos] --> B[Preprocesamiento]
+    B --> C[División del Dataset]
+    C --> D[Entrenamiento de Modelos]
+    D --> E[Evaluación]
+    E --> F[Empaquetamiento]
+    F --> G[Despliegue]
+    G --> H[Interfaz para Médicos]
+    H --> I[Monitoreo]
+    I --> J[Reentrenamiento]
+    J -->|Nuevos datos| A
+
+    %% Subprocesos y tecnologías (en azul)
+    A -->|AWS Glue / S3| A
+    B -->|SageMaker Processing Jobs| B
+    D -->|SageMaker Estimators<br>Random Forest/XGBoost/Transformers| D
+    E -->|SageMaker Experiments| E
+    F -->|SageMaker Model Registry / Docker| F
+    G -->|SageMaker Endpoint<br>o Contenedor Local| G
+    H -->|React + Flask / Tkinter| H
+    I -->|SageMaker Model Monitor| I
+    J -->|AWS Step Functions| J
+
+    %% Etiquetas de grupos
+    subgraph "🔵 1. Ingesta"
+        A
+    end
+    subgraph "🔵 2. Preprocesamiento"
+        B
+    end
+    subgraph "🔵 3. Modelado"
+        C --> D --> E
+    end
+    subgraph "🟢 4. Operacionalización"
+        F --> G --> H
+    end
+    subgraph "🟠 5. Monitoreo"
+        I --> J
+    end
 ```
 
 ---
