@@ -17,47 +17,11 @@ Diseñar un pipeline de Machine Learning capaz de predecir, a partir de los sín
 
 ## Diagrama del rediseño Pipeline MLOps
 
-```mermaid
-graph TD
-    A[Ingesta de Datos] --> B[Preprocesamiento]
-    B --> C[División del Dataset]
-    C --> D[Entrenamiento de Modelos]
-    D --> E[Evaluación]
-    E --> F[Empaquetamiento]
-    F --> G[Despliegue]
-    G --> H[Interfaz para Médicos]
-    H --> I[Monitoreo]
-    I --> J[Reentrenamiento]
-    J -->|Nuevos datos| A
+<img width="550" alt="image" src="https://github.com/user-attachments/assets/54806ea0-9c0b-43b0-bc40-1291bf8c4ef7" />
 
-    %% Subprocesos y tecnologías (en azul)
-    A -->|AWS Glue / S3| A
-    B -->|SageMaker Processing Jobs| B
-    D -->|SageMaker Estimators<br>Random Forest/XGBoost/Transformers| D
-    E -->|SageMaker Experiments| E
-    F -->|SageMaker Model Registry / Docker| F
-    G -->|SageMaker Endpoint<br>o Contenedor Local| G
-    H -->|React + Flask / Tkinter| H
-    I -->|SageMaker Model Monitor| I
-    J -->|AWS Step Functions| J
+<img width="444" alt="image" src="https://github.com/user-attachments/assets/3f7c8d35-2024-4a37-b786-d11713471022" />
 
-    %% Etiquetas de grupos
-    subgraph "🔵 1. Ingesta"
-        A
-    end
-    subgraph "🔵 2. Preprocesamiento"
-        B
-    end
-    subgraph "🔵 3. Modelado"
-        C --> D --> E
-    end
-    subgraph "🟢 4. Operacionalización"
-        F --> G --> H
-    end
-    subgraph "🟠 5. Monitoreo"
-        I --> J
-    end
-```
+
 
 ---
 
@@ -154,8 +118,8 @@ Ofrece flexibilidad para que el médico use localmente o haga peticiones vía we
 ### 8. **Interfaz para Médicos**
 
 **Tecnologías:**
-- **React + Flask API** o aplicación de escritorio simple con **Tkinter**.
-- Entradas: temperatura, ritmo cardíaco, oxigenación, síntomas (texto).
+- **React + Flask API** para correr en Local
+- **Recursos en AWS: SageMaker Endpoint** para acceso a traves de Nube Pública
 
 ---
 
