@@ -13,7 +13,7 @@ Presentar un rediseño del Pipeline de MLOps que se definió en la Actividad de 
 
 ## Documentación
 
-- [Pipeline MLOps Rediseñado](docs/pipeline_mlops.md)
-- [CHANGELOG](docs/CHANGELOG.md)
+- [Pipeline MLOps Rediseñado](pipeline_mlops.md)
+- [CHANGELOG](CHANGELOG.md)
 
 
